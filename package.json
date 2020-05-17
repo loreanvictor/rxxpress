@@ -1,12 +1,22 @@
 {
-  "name": "rxpress",
+  "name": "rxxpress",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Experimental mashup of RxJS and Express",
+  "main": "dist/es5/index.js",
+  "module": "dist/es6/index.js",
+  "types": "dist/es6/index.d.ts",
   "scripts": {
     "start": "ts-node-dev samples",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-es5": "tsc -p conf/typescript/es5.json",
+    "build-es6": "tsc -p conf/typescript/es6.json",
+    "build": "npm run build-es5 && npm run build-es6"
   },
+  "sideEffects": false,
+  "files": [
+    "dist/es6",
+    "dist/es5"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/loreanvictor/rxpress.git"
