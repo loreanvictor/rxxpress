@@ -68,7 +68,10 @@ router.use('/hello')
 
 export default router;
 ```
+Now checkout `/hello/world`, `/hello/dude` and `/hello/<whatever>` routers.
 [► TRY IT!](https://codesandbox.io/s/rxxpress-sub-router-w9x60?file=/src/router.ts)
+
+<br>
 
 ```ts
 // ...
