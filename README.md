@@ -35,13 +35,13 @@ As you can see in above example, you can use **RxXpress** routers inside **Expre
 Additionally, **RxXpress** provides the `use()` pipeable operator, which provides seamless interoperability
 with **Express**:
 
-- You can use it to pipe **Express** routers to **RxXpress** routers.\
+- You can use it to pipe **Express** routers to **RxXpress** routers.
 
-- You can use it to pipe **Express** middlewares to **RxXpress** routers.\
+- You can use it to pipe **Express** middlewares to **RxXpress** routers.
 
-- You can use it to pipe any request handler function `(req, res, next) => ...` to **RxXpress** routers.\
+- You can use it to pipe any request handler function `(req, res, next) => ...` to **RxXpress** routers.
 
-- You can use it to pipe **RxXpress** routers together.\
+- You can use it to pipe **RxXpress** routers together.
 
 <br>
 
