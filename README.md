@@ -78,7 +78,7 @@ request it at the same time:
 ```ts
 import { Router, timeout } from 'rxxpress';
 import { zip } from 'rxjs';
-import { filter, retry } from 'rxjs/operators';
+import { filter, retry, tap } from 'rxjs/operators';
 
 
 const router = new Router();
@@ -88,11 +88,16 @@ zip(
   endpoint.pipe(timeout(1000), filter(({req}) => req.query.key === ALICE_KEY)),  // --> Give'em a 1 sec window
   endpoint.pipe(timeout(1000), filter(({req}) => req.query.key === BOB_KEY)),    // --> Give'em a 1 sec window
 )
-.pipe(retry())                                                                   // --> Reset the whole thing when it fails
-.subscribe(([alice, bob]) => {
-  alice.res.send('You guys made it!');
-  bob.res.send('You guys made it!');
-});
+.pipe(
+  tap(([alice, bob]) => {
+    if (alice.res.headerSent || bob.res.headerSent) throw Error();
+
+    alice.res.send('You guys made it!');
+    bob.res.send('You guys made it!');
+  }),
+  retry()
+)
+.subscribe();
 ```
 
 <br><br>
