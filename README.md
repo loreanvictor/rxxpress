@@ -90,8 +90,6 @@ zip(
 )
 .pipe(
   tap(([alice, bob]) => {
-    if (alice.res.headerSent || bob.res.headerSent) throw Error();
-
     alice.res.send('You guys made it!');
     bob.res.send('You guys made it!');
   }),
