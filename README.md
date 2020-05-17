@@ -37,6 +37,12 @@ Well I have _ABSOLUTELY NO IDEA_ where this is going to be really useful. My int
 weird stuff. For example, you can use it to do rate limiting on a particular endpoint:
 
 ```ts
+import { Router, respond } from 'rxxpress';
+import { debounceTime } from 'rxjs/operators';
+
+
+const router = new Router();
+
 router.get('/endpoint')
   .pipe(
     debounceTime(1000),                // --> only respond to one request each second
@@ -48,6 +54,12 @@ router.get('/endpoint')
 Or you can do rate limiting per end-point per user:
 
 ```ts
+import { Router, respond } from 'rxxpress';
+import { groupBy, mergeMap, debounceTime } from 'rxjs/operators';
+
+
+const router = new Router();
+
 router.get('/endpoint')
   .pipe(
     use(authenticate),                                 // --> some authentication method, populates `user_id`
@@ -64,12 +76,20 @@ You can even do weirder stuff like responding to an endpoint only if two users w
 request it at the same time:
 
 ```ts
+import { Router, timeout } from 'rxxpress';
+import { zip } from 'rxjs';
+import { filter, retry } from 'rxjs/operators';
+
+
+const router = new Router();
 const endpoint = router.get('/endpoint');
 
 zip(
-  endpoint.pipe(filter(({req}) => req.query.key === ALICE_KEY)),
-  endpoint.pipe(filter(({req}) => req.query.key === BOB_KEY)),
-).subscribe(([alice, bob]) => {
+  endpoint.pipe(timeout(1000), filter(({req}) => req.query.key === ALICE_KEY)),  // --> Give'em a 1 sec window
+  endpoint.pipe(timeout(1000), filter(({req}) => req.query.key === BOB_KEY)),    // --> Give'em a 1 sec window
+)
+.pipe(retry())                                                                   // --> Reset the whole thing when it fails
+.subscribe(([alice, bob]) => {
   alice.res.send('You guys made it!');
   bob.res.send('You guys made it!');
 });
