@@ -52,7 +52,7 @@ router.get('/endpoint')
   .pipe(
     use(authenticate),                                 // --> some authentication method, populates `user_id`
     groupBy(({req}) => req.user_id),                   // --> group incoming requests by `user_id`
-    mergeMap(group => group.pipe(debounceTime(1000)))  // --> respond to once request per second per group
+    mergeMap(group => group.pipe(debounceTime(1000))), // --> respond to once request per second per group
     respond(() => 'Halo!')
   )
   .subscribe();
