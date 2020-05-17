@@ -82,11 +82,11 @@ import { filter, retry, tap } from 'rxjs/operators';
 
 
 const router = new Router();
-const endpoint = router.get('/endpoint');
+const endpoint = router.get('/endpoint').pipe(timeout(1000));
 
 zip(
-  endpoint.pipe(timeout(1000), filter(({req}) => req.query.key === ALICE_KEY)),  // --> Give'em a 1 sec window
-  endpoint.pipe(timeout(1000), filter(({req}) => req.query.key === BOB_KEY)),    // --> Give'em a 1 sec window
+  endpoint.pipe(filter(({req}) => req.query.key === ALICE_KEY)),
+  endpoint.pipe(filter(({req}) => req.query.key === BOB_KEY)),
 )
 .pipe(
   tap(([alice, bob]) => {
