@@ -1,7 +1,13 @@
 import { Router as _Router, Request, Response, NextFunction } from 'express';
 import { Subject } from 'rxjs';
 
-import { Packet, Method } from './types';
+import { Packet, Method, Req } from './types';
+
+
+const C = (req: Request) => {
+  (req as Req)._ = (req as Req)._ || {};
+  return req as Req;
+}
 
 
 export class Router {
@@ -9,7 +15,7 @@ export class Router {
 
   on(method: 'all' | Method, route?: string | RegExp) {
     const sub = new Subject<Packet>();
-    const _handler = (req: Request, res: Response, next: NextFunction) => sub.next({req, res, next});
+    const _handler = (req: Request, res: Response, next: NextFunction) => sub.next({req: C(req), res, next});
 
     if (route) this._internal[method].apply(this._internal, [route, _handler]);
     else this._internal[method].apply(this._internal, [_handler]);
@@ -43,7 +49,7 @@ export class Router {
 
   use(route?: string | RegExp) {
     const sub = new Subject<Packet>();
-    const handler = (req: Request, res: Response, next: NextFunction) => sub.next({req, res, next});
+    const handler = (req: Request, res: Response, next: NextFunction) => sub.next({req: C(req), res, next});
     if (route) this._internal.use(route, handler);
     else this._internal.use(handler);
     return sub;

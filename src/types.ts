@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
 
+export type Req = Request & { _: {[key: string]: any} };
+
 export interface Packet {
-  req: Request,
+  req: Req,
   res: Response,
   next: NextFunction,
 }

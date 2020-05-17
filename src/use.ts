@@ -1,5 +1,5 @@
 import { Router as _Router, RequestHandler, Request, Response, NextFunction } from 'express';
-import { Observable, Observer } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Router } from './router';
 import { Packet } from './types';
@@ -22,8 +22,16 @@ export function use(handler: Router | _Router | RequestHandler) {
   const _handle = _handler(handler);
   return (source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
-      source.subscribe(
-        packet => _handle(packet.req, packet.res, (err: any) => observer.next(packet)),
+      return source.subscribe(async packet => {
+          try {
+            await _handle(packet.req, packet.res, (err: any) => {
+              if (err) observer.error(err);
+              else observer.next(packet)
+            })
+          } catch(err) {
+            observer.error(err);
+          }
+        },
         error => observer.error(error),
         () => observer.complete(),
       );
