@@ -70,8 +70,6 @@ export default router;
 ```
 [► TRY IT!](https://codesandbox.io/s/rxxpress-sub-router-w9x60?file=/src/router.ts)
 
-The `use()` operator also allows piping **Express** routers, middlewares and request handlers to **RxXpress** routers:
-
 ```ts
 // ...
 
