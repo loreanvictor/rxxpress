@@ -29,10 +29,58 @@ app.listen(3000);
 ```
 [► TRY IT!](https://codesandbox.io/s/rxxpress-hellow-world-qi85k?file=/src/router.ts)
 
+<br><br>
+
+# WHY?
+
+Well I have _ABSOLUTELY NO IDEA_ where this is going to be really useful. My intention was to be able to do 
+weird stuff. For example, you can use it to do rate limiting on a particular endpoint:
+
+```ts
+router.get('/endpoint')
+  .pipe(
+    debounceTime(1000),                // --> only respond to one request each second
+    tap(({res}) => res.send('Halo!'))
+  )
+  .subscribe();
+```
+
+Or you can do rate limiting per end-point per user:
+
+```ts
+router.get('/endpoint')
+  .pipe(
+    use(authenticate),                                 // --> some authentication method, populates `user_id`
+    groupBy(({req}) => req.user_id),                   // --> group incoming requests by `user_id`
+    mergeMap(group => group.pipe(debounceTime(1000)))  // --> respond to once request per second per group
+    tap(({res}) => res.send('Halo!'))
+  )
+  .subscribe();
+```
+
 <br>
 
-As you can see in above example, you can use **RxXpress** routers inside **Express** routers.
-Additionally, **RxXpress** provides the `use()` pipeable operator, which provides seamless interoperability
+You can even do weirder stuff like responding to an endpoint only if two users with different keys
+request it at the same time:
+
+```ts
+const endpoint = router.get('/endpoint');
+
+zip(
+  endpoint.pipe(filter(({req}) => req.query.key === ALICE_KEY)),
+  endpoint.pipe(filter(({req}) => req.query.key === BOB_KEY)),
+).subscribe(([alice, bob]) => {
+  alice.res.send('You guys made it!');
+  bob.res.send('You guys made it!');
+});
+```
+
+<br><br>
+
+# Interoperability
+
+You can use **RxXpress** routers inside **Express** routers (check the first example). 
+**RxXpress** also provides the `use()` pipeable operator, which provides seamless interoperability
 with **Express**:
 
 - You can use it to pipe **Express** routers to **RxXpress** routers.
@@ -68,7 +116,7 @@ router.use('/hello')
 
 export default router;
 ```
-Now checkout `/hello/world`, `/hello/dude` and `/hello/<whatever>` routers.
+Now checkout `/hello/world`, `/hello/dude` and `/hello/<whatever>` routers. \
 [► TRY IT!](https://codesandbox.io/s/rxxpress-sub-router-w9x60?file=/src/router.ts)
 
 <br>
