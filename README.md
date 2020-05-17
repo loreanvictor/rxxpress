@@ -13,10 +13,10 @@ it returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject):
 
 ```ts
 // router.ts
-import { Router } from 'rxxpress';
+import { Router, respond } from 'rxxpress';
 
 const router = new Router();
-router.get('/').subscribe(({res}) => res.send('Hellow World!'));
+router.get('/').pipe(respond(() => 'Hellow World!')).subscribe();
 ```
 ```ts
 // index.ts
@@ -40,7 +40,7 @@ weird stuff. For example, you can use it to do rate limiting on a particular end
 router.get('/endpoint')
   .pipe(
     debounceTime(1000),                // --> only respond to one request each second
-    tap(({res}) => res.send('Halo!'))
+    respond(() => 'Halo!')
   )
   .subscribe();
 ```
@@ -53,7 +53,7 @@ router.get('/endpoint')
     use(authenticate),                                 // --> some authentication method, populates `user_id`
     groupBy(({req}) => req.user_id),                   // --> group incoming requests by `user_id`
     mergeMap(group => group.pipe(debounceTime(1000)))  // --> respond to once request per second per group
-    tap(({res}) => res.send('Halo!'))
+    respond(() => 'Halo!')
   )
   .subscribe();
 ```
