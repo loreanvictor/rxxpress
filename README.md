@@ -5,6 +5,8 @@ An experimental mash-up of [**RxJS**](https://rxjs-dev.firebaseapp.com) and [**E
 npm i rxxpress
 ```
 
+<br>
+
 The core of **RxXpress** is the `Router` class, which behaves like 
 [**Express**'s `Router`](http://expressjs.com/en/5x/api.html#router), except that instead of accepting a callback,
 it returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject):
@@ -27,9 +29,21 @@ app.listen(3000);
 ```
 [► TRY IT!](https://codesandbox.io/s/rxxpress-hellow-world-qi85k?file=/src/router.ts)
 
-As you can see in this example, you can use **RxXpress** routers inside **Express** routers.
+<br>
 
-You can also use the `use()` operator to pipe **RxXpress** routers together:
+As you can see in above example, you can use **RxXpress** routers inside **Express** routers.
+Additionally, **RxXpress** provides the `use()` pipeable operator, which provides seamless interoperability
+with **Express**:
+
+- You can use it to pipe **Express** routers to **RxXpress** routers.\
+
+- You can use it to pipe **Express** middlewares to **RxXpress** routers.\
+
+- You can use it to pipe any request handler function `(req, res, next) => ...` to **RxXpress** routers.\
+
+- You can use it to pipe **RxXpress** routers together.\
+
+<br>
 
 ```ts
 // sub-router.ts
