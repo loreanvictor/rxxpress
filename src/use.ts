@@ -12,8 +12,8 @@ function _isExpressRouter(handler: _Router | RequestHandler): handler is _Router
 
 function _handler(og: Router | _Router | RequestHandler): RequestHandler {
   if (og instanceof Router) return _handler(og.core);
-  if (_isExpressRouter(og)) 
-    return (req: Request, res: Response, next: NextFunction) => (og as any).handle(req, res, next);
+  if (_isExpressRouter(og))
+    return (req: Request, res: Response, next: NextFunction) => og(req, res, next);
   return og;
 }
 

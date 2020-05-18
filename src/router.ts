@@ -18,7 +18,7 @@ export class Router {
     const _handler = (req: Request, res: Response, next: NextFunction) => sub.next({req: C(req), res, next});
 
     if (route) this._internal[method].apply(this._internal, [route, _handler]);
-    else this._internal[method].apply(this._internal, [_handler]);
+    else this._internal[method].apply(this._internal, ['*', _handler]);
     return sub;
   }
 
@@ -33,7 +33,7 @@ export class Router {
   mkactivity(route?: string | RegExp) { return this.on('mkactivity', route); }
   mkcol(route?: string | RegExp) { return this.on('mkcol', route); }
   move(route?: string | RegExp) { return this.on('move', route); }
-  mSearch(route?: string | RegExp) { return this.on('m-search', route); }
+  /* istanbul ignore next */mSearch(route?: string | RegExp) { return this.on('m-search', route); }
   notify(route?: string | RegExp) { return this.on('notify', route); }
   options(route?: string | RegExp) { return this.on('options', route); }
   patch(route?: string | RegExp) { return this.on('patch', route); }

@@ -4,3 +4,4 @@ export { timeout } from './timeout';
 export { noop } from './noop';
 export { respond, json, RepsonseFunc } from './respond';
 export { check, validate, permit, ifexists, Check, CheckOptions, PresetCheckOptions } from './check';
+export { Packet, Method, Req } from './types';
