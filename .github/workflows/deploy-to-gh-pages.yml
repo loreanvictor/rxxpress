@@ -19,6 +19,7 @@ jobs:
           # build repo
           (PATH=$(npm bin):$PATH && codedoc build)
           # copy assets
+          mkdir dist/docs
           mkdir dist/docs/assets
           cp -r docs/assets/ dist/docs/assets/
         env:
