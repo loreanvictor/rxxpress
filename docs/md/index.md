@@ -44,8 +44,72 @@ except that instead of accepting callbacks it returns an `Observable`:
 > :Buttons
 > > :Button label=Try It!, url=https://codesandbox.io/s/rxxpress-hellow-world-qi85k?file=/src/router.ts
 
-As you can see, you can easily use **RxXpress** alongside existing **Express** code. **RxXpress** even provides
-the `use()` operator to allow integration of existing middlewares, **Express** routers and
+---
+
+# Use Cases
+
+**RxXpress** allows you to easily treat your end-points like streams.
+For example, you can conduct rate-limiting on a particular end-point on a per-user
+basis (e.g. each user can invoke that particular end-point only once per second):
+
+```ts
+import { Router, respond } from 'rxxpress';
+import { debounceTime, mergeMap, groupBy } from 'rxjs/operators';
+
+import { authenticate } from './auth';
+
+const router = new Router();
+router.post('/rate-limited-endpoint')
+.pipe(
+/*!*/  authenticate(),                                        // --> authenticates the request, adding `req._.user_id`
+/*!*/  groupBy(({req}) => req._.user_id),                     // --> group incoming request by user
+/*!*/  mergeMap(group => group.pipe(debounceTime(1000))),     // --> debounce each group to allow one each second
+/*!*/  respond(() => 'Halo meine liebe!'),                    // --> respond
+)
+.subscribe();
+```
+
+<br>
+
+Or you can create an end-point that only responds when both _ALICE_ and _BOB_ request
+it with their respective keys at the same time (max 5 seconds apart):
+
+```ts
+import { Router, timeout } from 'rxxpress';
+import { zip } from 'rxjs'; // @see [RxJS zip](https://www.learnrxjs.io/learn-rxjs/operators/combination/zip)
+import { filter, retry, tap } from 'rxjs/operators';
+
+
+const router = new Router();
+/*!*/const endpoint = router.get('/endpoint').pipe(timeout(5000));       // --> let the endpoint remain waiting for max 5 seconds
+
+/*!*/zip(                                                                // --> pair corresponding requests
+/*!*/  endpoint.pipe(filter(({req}) => req.query.key === ALICE_KEY)),    // --> ALICE requesting with her key
+/*!*/  endpoint.pipe(filter(({req}) => req.query.key === BOB_KEY)),      // --> BOB requesting with his key
+/*!*/)
+/*!*/.pipe(
+/*!*/  tap(([alice, bob]) => {                                           // --> Respond when both have requested
+/*!*/    alice.res.send('You guys made it!');                            // --> Respond when both have requested
+/*!*/    bob.res.send('You guys made it!');                              // --> Respond when both have requested
+/*!*/  }),
+/*!*/  retry()                                                           // --> retry when it fails (for example, due to timeout)
+/*!*/)
+.subscribe();
+```
+
+> [free_breakfast](:Icon (align=-6px)) &nbsp;&nbsp; **TO BE HONEST ...**
+>
+> I actually just made this to be able to do weird stuff. I have no proper
+> idea of where it would be particularly useful.
+
+---
+
+# Inter-Operability
+
+**RxXpress** is fully inter-operable with **Express**.
+You can seamlessly use **RxXpress** alongside existing **Express** code, by passing
+**RxXpress** routers to **Express** apps and routers.
+You can also use the `use()` operator to integrate existing middlewares, **Express** routers and
 other **RxXpress** routers into an **RxXpress** router:
 
 ```ts
@@ -72,7 +136,9 @@ app.use(router.core);                   // --> setup express, hook our main rout
 app.listen(3000);                       // --> setup express, hook our main router, run it
 ```
 
-<br>
+---
+
+# Convenience Operators
 
 **RxXpress** also provides some other convenient operators, making building web-servers
 much more enjoyable:
@@ -108,5 +174,6 @@ router.get('/user-info/:user_id')
 
 export default router;
 ```
+
 
 > :ToCPrevNext

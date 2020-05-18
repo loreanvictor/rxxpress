@@ -18,6 +18,18 @@ export const theme = /*#__PURE__*/createTheme({
       background: '#111111',
     }
   },
+  quote: {
+    light: {
+      background: '#fbeeff',
+      border: '#ebc6ff',
+      text: '#45046a',
+    },
+    dark: {
+      background: '#202040',
+      border: '#543864',
+      text: '#fbeeff',
+    }
+  },
   code: {
     light: {
       ...DefaultCodeThemeLight,
@@ -27,7 +39,8 @@ export const theme = /*#__PURE__*/createTheme({
     },
     dark: {
       shadow: 'none',
-      background: '#000000'
+      background: '#000000',
+      lineHightlight: '#202040',
     }
   }
 });

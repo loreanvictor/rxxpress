@@ -15,7 +15,10 @@ export function content(_content: HTMLElement, toc: HTMLElement, renderer: Rende
           fonts={<Fonts {...config.page.fonts}/>}
 
           scripts={config.page.scripts}
-          stylesheets={[...config.page.stylesheets || [], <style>{`p {line-height: 1.8em}`}</style>]}
+          stylesheets={[
+            ...config.page.stylesheets || [], 
+            <style>{`* {line-height: 1.65em} code, code * {line-height: 1.25em}`}</style>
+          ]}
 
           header={<Header {...config}/>}
           footer={<Footer {...config}/>}
