@@ -1,0 +1,32 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          # install .codedoc dependencies
+          (cd .codedoc && npm install)
+          # install codedoc
+          npm install @codedoc/cli
+          # build repo
+          (PATH=$(npm bin):$PATH && codedoc build)
+          # copy assets
+          mkdir dist/docs/assets
+          cp -r docs/assets/ dist/docs/assets/
+        env:
+          GITHUB_BUILD: true
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: dist
