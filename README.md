@@ -1,5 +1,10 @@
 ![banner](/banner.svg)
 
+[![Build Status](https://badgen.net/travis/loreanvictor/rxxpress?label=build&cache=300&icon=travis)](https://travis-ci.org/loreanvictor/rxxpress)
+[![Code Coverage](https://badgen.net/codecov/c/github/loreanvictor/rxxpress?cache=300&icon=codecov)](https://codecov.io/gh/loreanvictor/rxxpress)
+[![NPM Version](https://badgen.net/npm/v/rxxpress?cache=300&icon=npm)](https://www.npmjs.com/package/rxxpress)
+[![License](https://badgen.net/github/license/loreanvictor/rxxpress?icon=github)](LICENSE)
+
 An experimental mash-up of [**RxJS**](https://rxjs-dev.firebaseapp.com) and [**Express**](https://expressjs.com).
 ```
 npm i rxxpress
