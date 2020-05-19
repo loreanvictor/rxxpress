@@ -100,7 +100,7 @@ const router = new Router();
 > [free_breakfast](:Icon (align=-6px)) &nbsp;&nbsp; **TO BE HONEST ...**
 >
 > I actually just made this to be able to do weird stuff. I have no proper
-> idea of where it would be particularly useful.
+> idea of where it would be practically useful.
 
 ---
 
