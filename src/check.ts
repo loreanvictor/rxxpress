@@ -53,10 +53,14 @@ export function validate(c: Check, message: string = '') {
   return check(c, { message, status: 400 });
 }
 
-export function permit(c: Check, message: string = '') {
+export function authorize(c: Check, message: string = '') {
+  return check(c, { message, status: 401 });
+}
+
+export function allow(c: Check, message: string = '') {
   return check(c, { message, status: 403 });
 }
 
-export function ifexists(c: Check, message: string = '') {
+export function find(c: Check, message: string = '') {
   return check(c, { message, status: 404 });
 }

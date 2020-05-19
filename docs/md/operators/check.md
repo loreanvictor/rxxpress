@@ -1,0 +1,3 @@
+# `check()` operator
+
+> :ToCPrevNext

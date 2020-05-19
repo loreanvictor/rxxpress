@@ -145,7 +145,7 @@ much more enjoyable:
 
 ```ts
 import { verify } from 'jsonwebtoken';   // @see [Json Web Token](https://www.npmjs.com/package/jsonwebtoken)
-/*!*/import { Router, validate, permit, ifexists, json } from 'rxxpress';
+/*!*/import { Router, validate, allow, find, json } from 'rxxpress';
 
 import { User } from './user.model';
 import { SECRET } from './secrets';
@@ -161,8 +161,8 @@ router.get('/user-info/:user_id')
       return true;                                                    // --> validate that request has a token and the token is valid
     } catch { return false; }                                         // --> validate that request has a token and the token is valid
   }),                                                                 // --> validate that request has a token and the token is valid
-/*!*/  permit(({req}) => req._.payload.user_id === req.params.user_id),    // --> permit only if the user owning the token is the requested user
-/*!*/  ifexists(async ({req}) => {                                         // --> check if requested user exists
+/*!*/  allow(({req}) => req._.payload.user_id === req.params.user_id),     // --> allow only if the user owning the token is the requested user
+/*!*/  find(async ({req}) => {                                             // --> check if requested user exists
     try {                                                             // --> check if requested user exists
       req._.user = await User.findOne({ _id: req.params.user_id });   // --> check if requested user exists
       return true;                                                    // --> check if requested user exists

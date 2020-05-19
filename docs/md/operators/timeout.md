@@ -1,0 +1,3 @@
+# `timeout()` operator
+
+> :ToCPrevNext

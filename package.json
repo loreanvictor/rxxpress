@@ -60,7 +60,9 @@
       "src/**/*.ts"
     ],
     "exclude": [
-      "src/**/test/*"
+      "src/**/test/*",
+      ".codedoc/**/*",
+      ".codedoc/node_modules/**/*"
     ],
     "reporter": [
       "text",

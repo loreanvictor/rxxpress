@@ -6,7 +6,7 @@ import { delay, tap, mergeMap } from 'rxjs/operators';
 import { Router } from '../router';
 import { respond } from '../respond';
 import { use } from '../use';
-import { check, validate, permit, ifexists } from '../check';
+import { check, validate, authorize, allow, find } from '../check';
 
 
 describe('check()', () => {
@@ -215,12 +215,50 @@ describe('validate()', () => {
   });
 });
 
-describe('permit()', () => {
+describe('authorize()', () => {
+  it('should be a `check()` with 401 default status.', done => {
+    test(
+      app => {
+        const router = new Router();
+        router.get('/').pipe(authorize(() => false)).subscribe();
+        app.use(router.core);
+      },
+      (req, cleanup) => {
+        req.get('/').then(res => {
+          cleanup();
+          res.status.should.equal(401);
+          done();
+        });
+      }
+    )
+  });
+
+  it('should work with custom messages.', done => {
+    test(
+      app => {
+        const router = new Router();
+        router.get('/').pipe(authorize(() => false, 'No man!')).subscribe();
+        app.use(router.core);
+      },
+      (req, cleanup) => {
+        req.get('/').then(res => {
+          cleanup();
+          res.status.should.equal(401);
+          res.text.should.equal('No man!');
+          done();
+        });
+      }
+    )
+  });
+});
+
+
+describe('allow()', () => {
   it('should be a `check()` with 403 default status.', done => {
     test(
       app => {
         const router = new Router();
-        router.get('/').pipe(permit(() => false)).subscribe();
+        router.get('/').pipe(allow(() => false)).subscribe();
         app.use(router.core);
       },
       (req, cleanup) => {
@@ -237,7 +275,7 @@ describe('permit()', () => {
     test(
       app => {
         const router = new Router();
-        router.get('/').pipe(permit(() => false, 'No man!')).subscribe();
+        router.get('/').pipe(allow(() => false, 'No man!')).subscribe();
         app.use(router.core);
       },
       (req, cleanup) => {
@@ -253,12 +291,12 @@ describe('permit()', () => {
 });
 
 
-describe('ifexists()', () => {
+describe('find()', () => {
   it('should be a `check()` with 404 default status.', done => {
     test(
       app => {
         const router = new Router();
-        router.get('/').pipe(ifexists(() => false)).subscribe();
+        router.get('/').pipe(find(() => false)).subscribe();
         app.use(router.core);
       },
       (req, cleanup) => {
@@ -275,7 +313,7 @@ describe('ifexists()', () => {
     test(
       app => {
         const router = new Router();
-        router.get('/').pipe(ifexists(() => false, 'No man!')).subscribe();
+        router.get('/').pipe(find(() => false, 'No man!')).subscribe();
         app.use(router.core);
       },
       (req, cleanup) => {
