@@ -68,14 +68,14 @@
   ],
   "components": [
     {
-      "name": "TabSelector",
-      "filename": "/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/tabs/selector.js",
-      "hash": "fBlFjAoqDOv3Fr/xjcgt+g=="
-    },
-    {
       "name": "ToCPrevNext",
       "filename": "/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/page/toc/prevnext/index.js",
       "hash": "LBIOIF1RFul+ZMm5uc+v4A=="
+    },
+    {
+      "name": "CollapseControl",
+      "filename": "/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/collapse/collapse-control.js",
+      "hash": "ZJfg7gGfDnOJo2MMQ9bouA=="
     },
     {
       "name": "GithubSearch",
@@ -96,6 +96,11 @@
       "name": "ConfigTransport",
       "filename": "/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/transport/config.js",
       "hash": "pY8u2rLRud73gDKEYFdPDQ=="
+    },
+    {
+      "name": "TabSelector",
+      "filename": "/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/tabs/selector.js",
+      "hash": "fBlFjAoqDOv3Fr/xjcgt+g=="
     }
   ],
   "renderer": {
