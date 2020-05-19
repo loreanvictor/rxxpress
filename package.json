@@ -1,6 +1,6 @@
 {
   "name": "rxxpress",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Experimental mashup of RxJS and Express",
   "main": "dist/es5/index.js",
   "module": "dist/es6/index.js",
@@ -22,14 +22,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/loreanvictor/rxpress.git"
+    "url": "git+https://github.com/loreanvictor/rxxpress.git"
   },
   "author": "Eugene Ghanizadeh Khoub <ghanizadeh.eugene@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/loreanvictor/rxpress/issues"
+    "url": "https://github.com/loreanvictor/rxxpress/issues"
   },
-  "homepage": "https://github.com/loreanvictor/rxpress#readme",
+  "homepage": "https://loreanvictor.github.io/rxxpress",
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.2.11",
@@ -52,6 +52,9 @@
     "http-errors": "^1.7.3",
     "rxjs": "^6.5.5"
   },
+  "keywords": [
+    "express", "rxjs", "web", "api", "router", "framework", "stream", "endpoint", "rate", "throttle", "debounce"
+  ],
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",
     "all": true,

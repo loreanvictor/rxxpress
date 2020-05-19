@@ -33,11 +33,11 @@ describe('timeout()', () => {
     )
   });
 
-  it('should by default emit an error as well.', done => {
+  it('should emit an error in unsafe mode.', done => {
     test(
       app => {
         const router = new Router();
-        router.get('/').pipe(timeout(10), delay(20)).subscribe(
+        router.get('/').pipe(timeout(10, false), delay(20)).subscribe(
           undefined,
           () => done()
         );
@@ -49,11 +49,11 @@ describe('timeout()', () => {
     )
   });
 
-  it('should not emit an error when told not to.', done => {
+  it('should not emit an error by default.', done => {
     test(
       app => {
         const router = new Router();
-        router.get('/').pipe(timeout(10, true), delay(20)).subscribe(
+        router.get('/').pipe(timeout(10), delay(20)).subscribe(
           undefined,
           () => done()
         );

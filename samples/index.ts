@@ -1,11 +1,12 @@
 import express from 'express';
-import { zip, from, of } from 'rxjs';
-import { filter, retry, tap, mapTo, catchError, debounceTime, mergeMap, groupBy } from 'rxjs/operators';
+import { zip } from 'rxjs';
+import { filter, retry, tap } from 'rxjs/operators';
 
-import { Router, timeout, json, validate, ifexists, permit } from '../src';
+import { Router, timeout, respond } from '../src';
 
 
 const router = new Router();
+// router.get('/').pipe(respond(() => 'Hellow World!')).subscribe();
 const endpoint = router.get('/').pipe(timeout(1000));
 
 zip(

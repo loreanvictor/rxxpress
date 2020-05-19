@@ -4,7 +4,7 @@ import { RequestTimeout } from 'http-errors';
 import { Packet } from './types';
 
 
-export function timeout(milisseconds: number, safe=false) {
+export function timeout(milisseconds: number, safe=true) {
   return(source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
       return source.subscribe(

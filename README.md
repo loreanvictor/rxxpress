@@ -36,6 +36,10 @@ app.listen(3000);
 
 <br><br>
 
+👉Read the [documentation](https://loreanvictor.github.io/rxxpress) for more information.
+
+<br><br>
+
 # WHY?
 
 Well I have _ABSOLUTELY NO IDEA_ where this is going to be really useful. My intention was to be able to do 
