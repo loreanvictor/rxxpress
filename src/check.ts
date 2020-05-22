@@ -20,7 +20,7 @@ export type Check = (packet: Packet) => boolean | Promise<boolean> | Observable<
  *
  */
 export interface CheckOptions {
-  /** 
+  /**
    *
    * The status of the response if the check fails.
    *

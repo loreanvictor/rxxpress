@@ -16,7 +16,7 @@ export function content(_content: HTMLElement, toc: HTMLElement, renderer: Rende
 
           scripts={config.page.scripts}
           stylesheets={[
-            ...config.page.stylesheets || [], 
+            ...config.page.stylesheets || [],
             <style>{`* {line-height: 1.65em} code, code * {line-height: 1.25em}`}</style>
           ]}
 
@@ -24,9 +24,9 @@ export function content(_content: HTMLElement, toc: HTMLElement, renderer: Rende
           footer={<Footer {...config}/>}
           toc={
             <ToC search={
-                  config.misc?.github ? 
+                  config.misc?.github ?
                   <GithubSearch$
-                    repo={config.misc.github.repo} 
+                    repo={config.misc.github.repo}
                     user={config.misc.github.user}
                     root={config.src.base}
                     pick={config.src.pick.source}

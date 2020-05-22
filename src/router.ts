@@ -12,7 +12,7 @@ const C = (req: Request) => {
 
 /**
  *
- * A `Router` can hook into different routes, creating 
+ * A `Router` can hook into different routes, creating
  * [`Observable`](https://rxjs-dev.firebaseapp.com/guide/observable)s for such routes.
  * @see [the official docs](https://loreanvictor.github.io/rxxpress/router) for more info.
  *
@@ -25,11 +25,11 @@ export class Router {
    * Creates and returns an [`Observable`](https://rxjs-dev.firebaseapp.com/guide/observable)
    * for stream of incoming requests on given route with given HTTP method.
    *
-   * @param method the HTTP method to listen to. list of possible HTTP methods can be found 
+   * @param method the HTTP method to listen to. list of possible HTTP methods can be found
    *                [here](https://expressjs.com/en/5x/api.html#routing-methods). Additionally, its
    *                value can be set to `'all'`.
    * @param route the route to listen to. if not passed, `'*'` is used as default.
-   * @returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject) emitting incmoing 
+   * @returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject) emitting incmoing
    *          [`Packet`](https://loreanvictor.github.io/rxxpress/router#packets)s.
    *
    */
@@ -75,7 +75,7 @@ export class Router {
    * with the [`use()`](https://loreanvictor.github.io/rxxpress/operators/use) oeprator.
    *
    * If the middleware observable is to delegate processing of a request to another observable / function,
-   * it **MUST** invoke `next()` on the corresponding 
+   * it **MUST** invoke `next()` on the corresponding
    * [`Packet`](https://loreanvictor.github.io/rxxpress/router#packets). This can also be done by piping
    * the observable to [`next()`](https://loreanvictor.github.io/rxxpress/operators/next) operator:
    *
@@ -90,8 +90,8 @@ export class Router {
    *
    * @param route the route to mount on. If no route is passed, the middleware observable will be
    *              mounted on all routes.
-   * 
-   * @returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject) emitting incmoing 
+   *
+   * @returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject) emitting incmoing
    *          [`Packet`](https://loreanvictor.github.io/rxxpress/router#packets)s.
    *
    */

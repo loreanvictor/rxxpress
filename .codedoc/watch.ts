@@ -2,8 +2,8 @@ import { exec, spawn } from 'child_process';
 import { config } from './config';
 
 
-const cmd = 'ts-node-dev'; 
-const params = `--project .codedoc/tsconfig.json` 
+const cmd = 'ts-node-dev';
+const params = `--project .codedoc/tsconfig.json`
             + ` -T --watch ${config.src.base},.codedoc`
             + ` --ignore-watch .codedoc/node_modules`
             + ` .codedoc/serve`;

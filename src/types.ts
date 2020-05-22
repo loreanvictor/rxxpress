@@ -53,7 +53,7 @@ export interface Packet {
  * @see [this entry](https://expressjs.com/en/5x/api.html#routing-methods) for more information.
  *
  */
-export type Method = 'checkout' | 'copy'       | 'delete' | 'get'    | 'head'     | 'lock' 
+export type Method = 'checkout' | 'copy'       | 'delete' | 'get'    | 'head'     | 'lock'
                    | 'merge'    | 'mkactivity' | 'mkcol'  | 'move'   | 'm-search' | 'notify'
                    | 'options'  | 'patch'      | 'post'   | 'purge'  | 'put'      | 'report'
                    | 'search'   | 'subscribe'  | 'trace'  | 'unlock' | 'unsubscribe';
