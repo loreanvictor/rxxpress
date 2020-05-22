@@ -1,6 +1,6 @@
 {
   "name": "rxxpress",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Experimental mashup of RxJS and Express",
   "main": "dist/es5/index.js",
   "module": "dist/es6/index.js",
