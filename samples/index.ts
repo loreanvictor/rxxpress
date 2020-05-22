@@ -27,4 +27,3 @@ app.listen(3000);
 app.use(router.core);
 app.use((_, res) => res.status(400).send('NOT FOUND!'));
 
-

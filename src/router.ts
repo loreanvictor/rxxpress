@@ -10,9 +10,29 @@ const C = (req: Request) => {
 }
 
 
+/**
+ *
+ * A `Router` can hook into different routes, creating 
+ * [`Observable`](https://rxjs-dev.firebaseapp.com/guide/observable)s for such routes.
+ * @see [the official docs](https://loreanvictor.github.io/rxxpress/router) for more info.
+ *
+ */
 export class Router {
   private _internal = _Router();
 
+  /**
+   *
+   * Creates and returns an [`Observable`](https://rxjs-dev.firebaseapp.com/guide/observable)
+   * for stream of incoming requests on given route with given HTTP method.
+   *
+   * @param method the HTTP method to listen to. list of possible HTTP methods can be found 
+   *                [here](https://expressjs.com/en/5x/api.html#routing-methods). Additionally, its
+   *                value can be set to `'all'`.
+   * @param route the route to listen to. if not passed, `'*'` is used as default.
+   * @returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject) emitting incmoing 
+   *          [`Packet`](https://loreanvictor.github.io/rxxpress/router#packets)s.
+   *
+   */
   on(method: 'all' | Method, route?: string | RegExp) {
     const sub = new Subject<Packet>();
     const _handler = (req: Request, res: Response, next: NextFunction) => sub.next({req: C(req), res, next});
@@ -47,6 +67,34 @@ export class Router {
   unlock(route?: string | RegExp) { return this.on('unlock', route); }
   unsubscribe(route?: string | RegExp) { return this.on('unsubscribe', route); }
 
+  /**
+   *
+   * Will create and return an [`Observable`](https://rxjs-dev.firebaseapp.com/guide/observable)
+   * that is mounted on given route as a middleware. This is useful for plugging in middleware
+   * functionality or mounting other routers for handling sub-routes, specifically combined
+   * with the [`use()`](https://loreanvictor.github.io/rxxpress/operators/use) oeprator.
+   *
+   * If the middleware observable is to delegate processing of a request to another observable / function,
+   * it **MUST** invoke `next()` on the corresponding 
+   * [`Packet`](https://loreanvictor.github.io/rxxpress/router#packets). This can also be done by piping
+   * the observable to [`next()`](https://loreanvictor.github.io/rxxpress/operators/next) operator:
+   *
+   * ```ts
+   * import { next, ... } from 'rxxpress';
+   *
+   * router.use('/some-path').pipe(
+   *   ...
+   *   next()
+   * ).subscribe();
+   * ```
+   *
+   * @param route the route to mount on. If no route is passed, the middleware observable will be
+   *              mounted on all routes.
+   * 
+   * @returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject) emitting incmoing 
+   *          [`Packet`](https://loreanvictor.github.io/rxxpress/router#packets)s.
+   *
+   */
   use(route?: string | RegExp) {
     const sub = new Subject<Packet>();
     const handler = (req: Request, res: Response, next: NextFunction) => sub.next({req: C(req), res, next});
@@ -55,5 +103,15 @@ export class Router {
     return sub;
   }
 
+  /**
+   *
+   * Represents the underlying [Express Router](https://expressjs.com/en/api.html#express.router).
+   * Can be used to mount this router on Express applications and other Express routers:
+   *
+   * ```ts
+   * app.use(router.core);
+   * ```
+   *
+   */
   get core() { return this._internal }
 }

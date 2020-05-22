@@ -4,8 +4,25 @@ import { first } from 'rxjs/operators';
 import { Packet } from './types';
 
 
+/**
+ *
+ * Represents a response function, which creates a response for
+ * incoming packets. Can return a value,
+ * a promise or an observable.
+ *
+ */
 export type RepsonseFunc = (packet: Packet) => any;
 
+/**
+ *
+ * Responds to incoming requests using given response function, if
+ * the request is not already responded to.
+ *
+ * @see [the official docs](https://loreanvictor.github.io/rxxpress/operators/respond) for more information.
+ *
+ * @param response the response function to use
+ *
+ */
 export function respond(response: RepsonseFunc) {
   return (source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
@@ -31,6 +48,16 @@ export function respond(response: RepsonseFunc) {
   }
 }
 
+/**
+ *
+ * Responds to incoming requests using given response function, sending
+ * JSON objects as response if the request is not already responded to.
+ *
+ * @see [the official docs](https://loreanvictor.github.io/rxxpress/operators/respond) for more information.
+ *
+ * @param response the response function to use
+ *
+ */
 export function json(response: RepsonseFunc) {
   return (source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {

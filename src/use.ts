@@ -18,6 +18,18 @@ function _handler(og: Router | _Router | RequestHandler): RequestHandler {
 }
 
 
+/**
+ *
+ * Allows piping the custom request handler to a [`Packet`](https://loreanvictor.github.io/rxxpress/router#packets)
+ * emitting observable (such as `router.get('/')` or `router.use()`).
+ *
+ * @see [the official docs](https://loreanvictor.github.io/rxxpress/operators/use) for more information.
+ *
+ * @param handler the request handler. **MUST** be either a [`Router`](https://loreanvictor.github.io/rxxpress/router),
+ *                an [Express Router](https://expressjs.com/en/api.html#express.router) or a request handler
+ *                function (`(req, res, next) => ...`)
+ *
+ */
 export function use(handler: Router | _Router | RequestHandler) {
   const _handle = _handler(handler);
   return (source: Observable<Packet>) => {
