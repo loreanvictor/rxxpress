@@ -12,22 +12,22 @@ import { loadDeferredIFrames } from '/home/runner/work/rxxpress/rxxpress/.codedo
 import { smoothLoading } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/transport/smooth-loading.js';smoothLoading();
 import { tocHighlight } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/page/toc/toc-highlight.js';tocHighlight();
 import { postNavSearch } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/page/toc/search/post-nav/index.js';postNavSearch();
-import { TabSelector } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/tabs/selector.js';
 import { ToCPrevNext } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/page/toc/prevnext/index.js';
 import { CollapseControl } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/collapse/collapse-control.js';
 import { GithubSearch } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/misc/github/search.js';
 import { ToCToggle } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/page/toc/toggle/index.js';
 import { DarkModeSwitch } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/darkmode/index.js';
 import { ConfigTransport } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/transport/config.js';
+import { TabSelector } from '/home/runner/work/rxxpress/rxxpress/.codedoc/node_modules/@codedoc/core/dist/es6/components/tabs/selector.js';
 
 const components = {
-  'fBlFjAoqDOv3Fr/xjcgt+g==': TabSelector,
   'LBIOIF1RFul+ZMm5uc+v4A==': ToCPrevNext,
   'ZJfg7gGfDnOJo2MMQ9bouA==': CollapseControl,
   '/m8+r+wiSKEmZTc1z7rDqg==': GithubSearch,
   'utudjKOAmo6EoJR1JLnWzQ==': ToCToggle,
   'ksSm2FwJFV83esIsfb7HWw==': DarkModeSwitch,
-  'pY8u2rLRud73gDKEYFdPDQ==': ConfigTransport
+  'pY8u2rLRud73gDKEYFdPDQ==': ConfigTransport,
+  'fBlFjAoqDOv3Fr/xjcgt+g==': TabSelector
 };
 
 const renderer = getRenderer();
