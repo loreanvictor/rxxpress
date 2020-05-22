@@ -91,7 +91,7 @@ describe('reject()', () => {
     const router = new Router();
     const endpoint = router.get('/');
     endpoint.pipe(reject(418)).subscribe(undefined, undefined, () => done());
-    endpoint.complete();
+    (endpoint as any).complete();
   });
 });
 

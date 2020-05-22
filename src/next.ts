@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, OperatorFunction } from 'rxjs';
 
 import { Packet } from './types';
 
@@ -15,7 +15,7 @@ import { Packet } from './types';
  *             to. If `false`, will pass all requests to next handler. Default is `true`.
  *
  */
-export function next(safe=true) {
+export function next(safe=true): OperatorFunction<Packet, Packet> {
   return (source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
       return source.subscribe(

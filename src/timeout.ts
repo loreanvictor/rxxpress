@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, OperatorFunction } from 'rxjs';
 import { RequestTimeout } from 'http-errors';
 
 import { Packet } from './types';
@@ -15,7 +15,7 @@ import { Packet } from './types';
  * @param safe         if `true`, will not throw an error on timeout. otherwise will throw an error on timeout.
  *
  */
-export function timeout(milisseconds: number, safe=true) {
+export function timeout(milisseconds: number, safe=true): OperatorFunction<Packet, Packet> {
   return(source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
       return source.subscribe(

@@ -149,6 +149,6 @@ describe('use()', () => {
     const router = new Router();
     const endpoint = router.get('/');
     endpoint.pipe(use(() => {})).subscribe(undefined, undefined, () => done());
-    endpoint.complete();
+    (endpoint as any).complete();
   });
 });

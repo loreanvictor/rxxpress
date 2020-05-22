@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, OperatorFunction } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { Packet } from './types';
@@ -23,7 +23,7 @@ export type RepsonseFunc = (packet: Packet) => any;
  * @param response the response function to use
  *
  */
-export function respond(response: RepsonseFunc) {
+export function respond(response: RepsonseFunc): OperatorFunction<Packet, Packet> {
   return (source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
       return source.subscribe(async packet => {
@@ -58,7 +58,7 @@ export function respond(response: RepsonseFunc) {
  * @param response the response function to use
  *
  */
-export function json(response: RepsonseFunc) {
+export function json(response: RepsonseFunc): OperatorFunction<Packet, Packet> {
   return (source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
       return source.subscribe(async packet => {

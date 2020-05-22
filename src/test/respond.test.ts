@@ -156,7 +156,7 @@ describe('respond()', () => {
     const router = new Router();
     const endpoint = router.get('/');
     endpoint.pipe(respond(() => '')).subscribe(undefined, undefined, () => done());
-    endpoint.complete();
+    (endpoint as any).complete();
   });
 });
 
@@ -308,6 +308,6 @@ describe('json()', () => {
     const router = new Router();
     const endpoint = router.get('/');
     endpoint.pipe(json(() => '')).subscribe(undefined, undefined, () => done());
-    endpoint.complete();
+    (endpoint as any).complete();
   });
 });

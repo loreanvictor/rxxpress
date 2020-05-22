@@ -173,7 +173,7 @@ describe('check()', () => {
     const router = new Router();
     const endpoint = router.get('/');
     endpoint.pipe(check(() => true)).subscribe(undefined, undefined, () => done());
-    endpoint.complete();
+    (endpoint as any).complete();
   });
 });
 

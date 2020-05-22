@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, OperatorFunction } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { Packet } from './types';
@@ -48,12 +48,12 @@ export interface CheckOptions {
  * @param options  check options (status and message).
  *
  */
-export function check(_check: Check, options: Partial<CheckOptions> = {}) {
+export function check(_check: Check, options: Partial<CheckOptions> = {}): OperatorFunction<Packet, Packet> {
   const opts: CheckOptions = {
     status: options.status ?? 500,
     message: options.message ?? '',
   }
- 
+
   return (source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
       return source.subscribe(
@@ -98,7 +98,7 @@ export function check(_check: Check, options: Partial<CheckOptions> = {}) {
  * @param message   the message to be sent if the check fails.
  *
  */
-export function validate(c: Check, message: string = '') {
+export function validate(c: Check, message: string = ''): OperatorFunction<Packet, Packet> {
   return check(c, { message, status: 400 });
 }
 
@@ -115,7 +115,7 @@ export function validate(c: Check, message: string = '') {
  * @param message   the message to be sent if the check fails.
  *
  */
-export function authorize(c: Check, message: string = '') {
+export function authorize(c: Check, message: string = ''): OperatorFunction<Packet, Packet> {
   return check(c, { message, status: 401 });
 }
 
@@ -132,7 +132,7 @@ export function authorize(c: Check, message: string = '') {
  * @param message   the message to be sent if the check fails.
  *
  */
-export function allow(c: Check, message: string = '') {
+export function allow(c: Check, message: string = ''): OperatorFunction<Packet, Packet> {
   return check(c, { message, status: 403 });
 }
 
@@ -149,6 +149,6 @@ export function allow(c: Check, message: string = '') {
  * @param message   the message to be sent if the check fails.
  *
  */
-export function find(c: Check, message: string = '') {
+export function find(c: Check, message: string = ''): OperatorFunction<Packet, Packet> {
   return check(c, { message, status: 404 });
 }

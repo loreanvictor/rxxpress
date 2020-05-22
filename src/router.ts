@@ -1,5 +1,5 @@
 import { Router as _Router, Request, Response, NextFunction } from 'express';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 import { Packet, Method, Req } from './types';
 
@@ -29,11 +29,11 @@ export class Router {
    *                [here](https://expressjs.com/en/5x/api.html#routing-methods). Additionally, its
    *                value can be set to `'all'`.
    * @param route the route to listen to. if not passed, `'*'` is used as default.
-   * @returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject) emitting incmoing 
+   * @returns an [`Obseervable`](https://rxjs-dev.firebaseapp.com/guide/observable) emitting incmoing 
    *          [`Packet`](https://loreanvictor.github.io/rxxpress/router#packets)s.
    *
    */
-  on(method: 'all' | Method, route?: string | RegExp) {
+  public on(method: 'all' | Method, route?: string | RegExp): Observable<Packet> {
     const sub = new Subject<Packet>();
     const _handler = (req: Request, res: Response, next: NextFunction) => sub.next({req: C(req), res, next});
 
@@ -42,30 +42,30 @@ export class Router {
     return sub;
   }
 
-  all(route?: string | RegExp) { return this.on('all', route); }
-  checkout(route?: string | RegExp) { return this.on('checkout', route); }
-  copy(route?: string | RegExp) { return this.on('copy', route); }
-  delete(route?: string | RegExp) { return this.on('delete', route); }
-  get(route?: string | RegExp) { return this.on('get', route); }
-  head(route?: string | RegExp) { return this.on('head', route); }
-  lock(route?: string | RegExp) { return this.on('lock', route); }
-  merge(route?: string | RegExp) { return this.on('merge', route); }
-  mkactivity(route?: string | RegExp) { return this.on('mkactivity', route); }
-  mkcol(route?: string | RegExp) { return this.on('mkcol', route); }
-  move(route?: string | RegExp) { return this.on('move', route); }
-  /* istanbul ignore next */mSearch(route?: string | RegExp) { return this.on('m-search', route); }
-  notify(route?: string | RegExp) { return this.on('notify', route); }
-  options(route?: string | RegExp) { return this.on('options', route); }
-  patch(route?: string | RegExp) { return this.on('patch', route); }
-  post(route?: string | RegExp) { return this.on('post', route); }
-  purge(route?: string | RegExp) { return this.on('purge', route); }
-  put(route?: string | RegExp) { return this.on('put', route); }
-  report(route?: string | RegExp) { return this.on('report', route); }
-  search(route?: string | RegExp) { return this.on('search', route); }
-  subscribe(route?: string | RegExp) { return this.on('subscribe', route); }
-  trace(route?: string | RegExp) { return this.on('trace', route); }
-  unlock(route?: string | RegExp) { return this.on('unlock', route); }
-  unsubscribe(route?: string | RegExp) { return this.on('unsubscribe', route); }
+  public all(route?: string | RegExp): Observable<Packet> { return this.on('all', route); }
+  public checkout(route?: string | RegExp): Observable<Packet> { return this.on('checkout', route); }
+  public copy(route?: string | RegExp): Observable<Packet> { return this.on('copy', route); }
+  public delete(route?: string | RegExp): Observable<Packet> { return this.on('delete', route); }
+  public get(route?: string | RegExp): Observable<Packet> { return this.on('get', route); }
+  public head(route?: string | RegExp): Observable<Packet> { return this.on('head', route); }
+  public lock(route?: string | RegExp): Observable<Packet> { return this.on('lock', route); }
+  public merge(route?: string | RegExp): Observable<Packet> { return this.on('merge', route); }
+  public mkactivity(route?: string | RegExp): Observable<Packet> { return this.on('mkactivity', route); }
+  public mkcol(route?: string | RegExp): Observable<Packet> { return this.on('mkcol', route); }
+  public move(route?: string | RegExp): Observable<Packet> { return this.on('move', route); }
+  /* istanbul ignore next */mSearch(route?: string | RegExp): Observable<Packet> { return this.on('m-search', route); }
+  public notify(route?: string | RegExp): Observable<Packet> { return this.on('notify', route); }
+  public options(route?: string | RegExp): Observable<Packet> { return this.on('options', route); }
+  public patch(route?: string | RegExp): Observable<Packet> { return this.on('patch', route); }
+  public post(route?: string | RegExp): Observable<Packet> { return this.on('post', route); }
+  public purge(route?: string | RegExp): Observable<Packet> { return this.on('purge', route); }
+  public put(route?: string | RegExp): Observable<Packet> { return this.on('put', route); }
+  public report(route?: string | RegExp): Observable<Packet> { return this.on('report', route); }
+  public search(route?: string | RegExp): Observable<Packet> { return this.on('search', route); }
+  public subscribe(route?: string | RegExp): Observable<Packet> { return this.on('subscribe', route); }
+  public trace(route?: string | RegExp): Observable<Packet> { return this.on('trace', route); }
+  public unlock(route?: string | RegExp): Observable<Packet> { return this.on('unlock', route); }
+  public unsubscribe(route?: string | RegExp): Observable<Packet> { return this.on('unsubscribe', route); }
 
   /**
    *
@@ -91,11 +91,11 @@ export class Router {
    * @param route the route to mount on. If no route is passed, the middleware observable will be
    *              mounted on all routes.
    * 
-   * @returns a [`Subject`](https://rxjs-dev.firebaseapp.com/guide/subject) emitting incmoing 
+   * @returns an [`Observable`](https://rxjs-dev.firebaseapp.com/guide/observable) emitting incmoing 
    *          [`Packet`](https://loreanvictor.github.io/rxxpress/router#packets)s.
    *
    */
-  use(route?: string | RegExp) {
+  public use(route?: string | RegExp): Observable<Packet> {
     const sub = new Subject<Packet>();
     const handler = (req: Request, res: Response, next: NextFunction) => sub.next({req: C(req), res, next});
     if (route) this._internal.use(route, handler);
@@ -113,5 +113,5 @@ export class Router {
    * ```
    *
    */
-  get core() { return this._internal }
+  public get core(): _Router { return this._internal }
 }

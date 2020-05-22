@@ -91,6 +91,6 @@ describe('timeout()', () => {
     const router = new Router();
     const endpoint = router.get('/');
     endpoint.pipe(timeout(10)).subscribe(undefined, undefined, () => done());
-    endpoint.complete();
+    (endpoint as any).complete();
   });
 });

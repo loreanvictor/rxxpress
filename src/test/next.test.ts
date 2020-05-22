@@ -117,6 +117,6 @@ describe('next()', () => {
     const router = new Router();
     const endpoint = router.get('/');
     endpoint.pipe(next()).subscribe(undefined, undefined, () => done());
-    endpoint.complete();
+    (endpoint as any).complete();
   });
 });

@@ -1,5 +1,5 @@
 import { Router as _Router, RequestHandler, Request, Response, NextFunction } from 'express';
-import { Observable } from 'rxjs';
+import { Observable, OperatorFunction } from 'rxjs';
 
 import { Router } from './router';
 import { Packet } from './types';
@@ -30,7 +30,7 @@ function _handler(og: Router | _Router | RequestHandler): RequestHandler {
  *                function (`(req, res, next) => ...`)
  *
  */
-export function use(handler: Router | _Router | RequestHandler) {
+export function use(handler: Router | _Router | RequestHandler): OperatorFunction<Packet, Packet> {
   const _handle = _handler(handler);
   return (source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
