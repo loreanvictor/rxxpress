@@ -18,7 +18,7 @@ const C = (req: Request) => {
  *
  */
 export class Router {
-  private _internal = _Router();
+  private _internal: _Router = _Router();
 
   /**
    *
@@ -53,7 +53,8 @@ export class Router {
   public mkactivity(route?: string | RegExp): Observable<Packet> { return this.on('mkactivity', route); }
   public mkcol(route?: string | RegExp): Observable<Packet> { return this.on('mkcol', route); }
   public move(route?: string | RegExp): Observable<Packet> { return this.on('move', route); }
-  /* istanbul ignore next */mSearch(route?: string | RegExp): Observable<Packet> { return this.on('m-search', route); }
+  /* istanbul ignore next */
+  public mSearch(route?: string | RegExp): Observable<Packet> { return this.on('m-search', route); }
   public notify(route?: string | RegExp): Observable<Packet> { return this.on('notify', route); }
   public options(route?: string | RegExp): Observable<Packet> { return this.on('options', route); }
   public patch(route?: string | RegExp): Observable<Packet> { return this.on('patch', route); }

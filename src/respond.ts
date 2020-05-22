@@ -11,7 +11,7 @@ import { Packet } from './types';
  * a promise or an observable.
  *
  */
-export type RepsonseFunc = (packet: Packet) => any;
+export type RepsonseFunc = (packet: Packet) => unknown;
 
 /**
  *
@@ -34,7 +34,7 @@ export function respond(response: RepsonseFunc): OperatorFunction<Packet, Packet
               _res.pipe(first())
               .subscribe(
                 r => packet.res.send(r),
-                err => observer.error(err)
+                err => observer.error(err),
               );
             else packet.res.send(_res);
           } catch(err) {

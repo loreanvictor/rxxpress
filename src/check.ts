@@ -70,7 +70,7 @@ export function check(_check: Check, options: Partial<CheckOptions> = {}): Opera
                   if (pass) observer.next(packet);
                   else packet.res.status(opts.status).send(opts.message);
                 },
-                err => observer.error(err)
+                err => observer.error(err),
               );
             }
           } catch(err) {
