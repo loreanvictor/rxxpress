@@ -30,7 +30,7 @@ export function respond(response: RepsonseFunc) {
         if (!packet.res.headersSent) {
           try {
             const _res = await response(packet);
-            if (_res instanceof Observable) 
+            if (_res instanceof Observable)
               _res.pipe(first())
               .subscribe(
                 r => packet.res.send(r),
@@ -65,7 +65,7 @@ export function json(response: RepsonseFunc) {
         if (!packet.res.headersSent) {
           try {
             const _res = await response(packet);
-            if (_res instanceof Observable) 
+            if (_res instanceof Observable)
               _res.pipe(first()).subscribe(
                 r => packet.res.json(r),
                 err => observer.error(err)
