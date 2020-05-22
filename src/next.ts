@@ -15,7 +15,7 @@ import { Packet } from './types';
  *             to. If `false`, will pass all requests to next handler. Default is `true`.
  *
  */
-export function next(safe:boolean=true): OperatorFunction<Packet, Packet> {
+export function next(safe: boolean=true): OperatorFunction<Packet, Packet> {
   return (source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
       return source.subscribe(

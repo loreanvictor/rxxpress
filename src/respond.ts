@@ -68,7 +68,7 @@ export function json(response: RepsonseFunc): OperatorFunction<Packet, Packet> {
             if (_res instanceof Observable)
               _res.pipe(first()).subscribe(
                 r => packet.res.json(r),
-                err => observer.error(err)
+                err => observer.error(err),
               );
             else packet.res.json(_res);
           } catch(err) {

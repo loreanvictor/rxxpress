@@ -15,7 +15,7 @@ import { Packet, Status } from './types';
  * @param safe         if `true`, will not throw an error on timeout. otherwise will throw an error on timeout.
  *
  */
-export function timeout(milisseconds: number, safe:boolean=true): OperatorFunction<Packet, Packet> {
+export function timeout(milisseconds: number, safe: boolean=true): OperatorFunction<Packet, Packet> {
   return(source: Observable<Packet>) => {
     return new Observable<Packet>(observer => {
       return source.subscribe(
