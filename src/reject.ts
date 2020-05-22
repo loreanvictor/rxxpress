@@ -1,6 +1,6 @@
 import { Observable, OperatorFunction } from 'rxjs';
 
-import { Packet } from './types';
+import { Packet, Status } from './types';
 
 
 /**
@@ -40,7 +40,8 @@ export function reject(status: number, message: string = ''): OperatorFunction<P
  * @param message  the text message to be sent.
  *
  */
-export function badrequest(message: string = ''): OperatorFunction<Packet, Packet> { return reject(400, message); }
+export function badrequest(message: string = ''): OperatorFunction<Packet, Packet>
+{ return reject(Status.BadRequest, message); }
 
 /**
  *
@@ -53,7 +54,8 @@ export function badrequest(message: string = ''): OperatorFunction<Packet, Packe
  * @param message  the text message to be sent.
  *
  */
-export function unauthorized(message: string = ''): OperatorFunction<Packet, Packet> { return reject(401, message); }
+export function unauthorized(message: string = ''): OperatorFunction<Packet, Packet>
+{ return reject(Status.Unauthorized, message); }
 
 /**
  *
@@ -66,7 +68,8 @@ export function unauthorized(message: string = ''): OperatorFunction<Packet, Pac
  * @param message  the text message to be sent.
  *
  */
-export function forbidden(message: string = ''): OperatorFunction<Packet, Packet> { return reject(403, message); }
+export function forbidden(message: string = ''): OperatorFunction<Packet, Packet>
+{ return reject(Status.Forbidden, message); }
 
 /**
  *
@@ -79,4 +82,5 @@ export function forbidden(message: string = ''): OperatorFunction<Packet, Packet
  * @param message  the text message to be sent.
  *
  */
-export function notfound(message: string = ''): OperatorFunction<Packet, Packet> { return reject(404, message); }
+export function notfound(message: string = ''): OperatorFunction<Packet, Packet>
+{ return reject(Status.NotFound, message); }

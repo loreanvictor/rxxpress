@@ -1,7 +1,7 @@
 import { Observable, OperatorFunction } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { Packet } from './types';
+import { Packet, Status } from './types';
 
 
 /**
@@ -50,7 +50,7 @@ export interface CheckOptions {
  */
 export function check(_check: Check, options: Partial<CheckOptions> = {}): OperatorFunction<Packet, Packet> {
   const opts: CheckOptions = {
-    status: options.status ?? 500,
+    status: options.status ?? Status.InternalError,
     message: options.message ?? '',
   }
 
@@ -99,7 +99,7 @@ export function check(_check: Check, options: Partial<CheckOptions> = {}): Opera
  *
  */
 export function validate(c: Check, message: string = ''): OperatorFunction<Packet, Packet> {
-  return check(c, { message, status: 400 });
+  return check(c, { message, status: Status.BadRequest });
 }
 
 /**
@@ -116,7 +116,7 @@ export function validate(c: Check, message: string = ''): OperatorFunction<Packe
  *
  */
 export function authorize(c: Check, message: string = ''): OperatorFunction<Packet, Packet> {
-  return check(c, { message, status: 401 });
+  return check(c, { message, status: Status.Unauthorized });
 }
 
 /**
@@ -133,7 +133,7 @@ export function authorize(c: Check, message: string = ''): OperatorFunction<Pack
  *
  */
 export function allow(c: Check, message: string = ''): OperatorFunction<Packet, Packet> {
-  return check(c, { message, status: 403 });
+  return check(c, { message, status: Status.Forbidden });
 }
 
 /**
@@ -150,5 +150,5 @@ export function allow(c: Check, message: string = ''): OperatorFunction<Packet, 
  *
  */
 export function find(c: Check, message: string = ''): OperatorFunction<Packet, Packet> {
-  return check(c, { message, status: 404 });
+  return check(c, { message, status: Status.NotFound });
 }

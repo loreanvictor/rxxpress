@@ -57,3 +57,18 @@ export type Method = 'checkout' | 'copy'       | 'delete' | 'get'    | 'head'   
                    | 'merge'    | 'mkactivity' | 'mkcol'  | 'move'   | 'm-search' | 'notify'
                    | 'options'  | 'patch'      | 'post'   | 'purge'  | 'put'      | 'report'
                    | 'search'   | 'subscribe'  | 'trace'  | 'unlock' | 'unsubscribe';
+
+
+/**
+ *
+ * Represents possible values for a HTTP response status
+ *
+ */
+export enum Status {
+  BadRequest = 400,
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404,
+  RequestTimeout = 408,
+  InternalError = 500,
+}

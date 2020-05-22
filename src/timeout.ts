@@ -1,7 +1,7 @@
 import { Observable, OperatorFunction } from 'rxjs';
 import { RequestTimeout } from 'http-errors';
 
-import { Packet } from './types';
+import { Packet, Status } from './types';
 
 
 /**
@@ -23,7 +23,7 @@ export function timeout(milisseconds: number, safe=true): OperatorFunction<Packe
           observer.next(packet);
           setTimeout(() => {
             if (!packet.res.headersSent) {
-              packet.res.status(408).send();
+              packet.res.status(Status.RequestTimeout).send();
               if (!safe) observer.error(new RequestTimeout());
             }
           }, milisseconds);
