@@ -6,7 +6,7 @@
 [![License](https://badgen.net/github/license/loreanvictor/rxxpress?icon=github)](LICENSE)
 
 An experimental mash-up of [**RxJS**](https://rxjs-dev.firebaseapp.com) and [**Express**](https://expressjs.com).
-```
+```bash
 npm i rxxpress
 ```
 
