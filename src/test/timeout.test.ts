@@ -1,4 +1,4 @@
-import { test } from './util';
+import { testWithRouter as test } from './util';
 
 import { of } from 'rxjs';
 import { delay, mergeMap } from 'rxjs/operators';
@@ -12,14 +12,12 @@ import { timeout } from '../timeout';
 describe('timeout()', () => {
   it('should respond automatically with 408 after given timeout.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/:delay').pipe(
           timeout(20),
           mergeMap((packet) => of(packet).pipe(delay(parseInt(packet.req.params.delay)))),
           respond(() => 'Done!')
         ).subscribe(undefined, () => {});
-        app.use(router.core);
       },
       (req, cleanup) => {
         Promise.all([req.get('/40'), req.get('/10')])
@@ -35,13 +33,11 @@ describe('timeout()', () => {
 
   it('should emit an error in unsafe mode.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(timeout(10, false), delay(20)).subscribe(
           undefined,
           () => done()
         );
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').end(() => cleanup());
@@ -51,13 +47,11 @@ describe('timeout()', () => {
 
   it('should not emit an error by default.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(timeout(10), delay(20)).subscribe(
           undefined,
           () => done()
         );
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').end(() => {
@@ -70,8 +64,7 @@ describe('timeout()', () => {
 
   it('should pass down errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           use((_, res) => {
             res.sendStatus(500);
@@ -79,7 +72,6 @@ describe('timeout()', () => {
           }),
           timeout(10)
         ).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());

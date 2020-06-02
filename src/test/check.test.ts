@@ -1,4 +1,4 @@
-import { test } from './util';
+import { testWithRouter as test } from './util';
 
 import { of, throwError } from 'rxjs';
 import { delay, tap, mergeMap } from 'rxjs/operators';
@@ -12,8 +12,7 @@ import { check, validate, authorize, allow, find } from '../check';
 describe('check()', () => {
   it('should check using given check function and either next or return with given status and msg,', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/:name').pipe(
           check(({req}) => req.params.name === 'dude', {
             status: 418,
@@ -21,7 +20,6 @@ describe('check()', () => {
           }),
           respond(() => 'Welcome dude!'),
         ).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         Promise.all([req.get('/john'), req.get('/dude')])
@@ -37,10 +35,8 @@ describe('check()', () => {
 
   it('should default to status 500 and empty text.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(check(() => false)).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -55,10 +51,8 @@ describe('check()', () => {
 
   it('should work with async checks.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(check(() => new Promise(resolve => resolve(false)))).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -73,13 +67,11 @@ describe('check()', () => {
 
   it('should work with observables.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/:name').pipe(
           check(({req}) => of(req.params.name === 'dude').pipe(delay(10))),
           respond(() => 'Halo dude!'),
         ).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         Promise.all([req.get('/dude'), req.get('/bro')])
@@ -95,14 +87,12 @@ describe('check()', () => {
 
   it('should catch errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(check(({res}) => { res.sendStatus(500); throw Error() }))
         .subscribe(
           () => {},
           () => done()
         );
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').end(() => cleanup());
@@ -112,8 +102,7 @@ describe('check()', () => {
 
   it('should catch async errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(check(({res}) => new Promise((_, reject) => { 
           res.sendStatus(500);
           reject();
@@ -122,7 +111,6 @@ describe('check()', () => {
           () => {},
           () => done()
         );
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').end(() => cleanup());
@@ -132,8 +120,7 @@ describe('check()', () => {
 
   it('should catch observable errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(check(({res}) => of(false).pipe(
           tap(() => res.sendStatus(500)),
           mergeMap(() => throwError(Error()))
@@ -142,7 +129,6 @@ describe('check()', () => {
           () => {},
           () => done()
         );
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').end(() => cleanup());
@@ -152,8 +138,7 @@ describe('check()', () => {
 
   it('should pass down errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           use((_, res) => {
             res.sendStatus(500);
@@ -161,7 +146,6 @@ describe('check()', () => {
           }),
           check(() => true)
         ).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());
@@ -181,10 +165,8 @@ describe('check()', () => {
 describe('validate()', () => {
   it('should be a `check()` with 400 default status.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(validate(() => false)).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -198,10 +180,8 @@ describe('validate()', () => {
 
   it('should work with custom messages.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(validate(() => false, 'No man!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -218,10 +198,8 @@ describe('validate()', () => {
 describe('authorize()', () => {
   it('should be a `check()` with 401 default status.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(authorize(() => false)).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -235,10 +213,8 @@ describe('authorize()', () => {
 
   it('should work with custom messages.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(authorize(() => false, 'No man!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -256,10 +232,8 @@ describe('authorize()', () => {
 describe('allow()', () => {
   it('should be a `check()` with 403 default status.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(allow(() => false)).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -273,10 +247,8 @@ describe('allow()', () => {
 
   it('should work with custom messages.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(allow(() => false, 'No man!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -294,10 +266,8 @@ describe('allow()', () => {
 describe('find()', () => {
   it('should be a `check()` with 404 default status.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(find(() => false)).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -311,10 +281,8 @@ describe('find()', () => {
 
   it('should work with custom messages.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(find(() => false, 'No man!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {

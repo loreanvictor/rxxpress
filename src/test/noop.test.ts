@@ -1,4 +1,4 @@
-import { should, expect } from 'chai'; should();
+import { should } from 'chai'; should();
 
 import { noop } from '../noop';
 

@@ -1,4 +1,4 @@
-import { test } from './util';
+import { testWithApp as test } from './util';
 
 import { tap } from 'rxjs/operators';
 

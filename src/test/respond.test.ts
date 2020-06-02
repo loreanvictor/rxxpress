@@ -1,4 +1,4 @@
-import { test } from './util';
+import { testWithRouter as test } from './util';
 
 import { throwError } from 'rxjs';
 import { tap, delay, mergeMap } from 'rxjs/operators';
@@ -12,10 +12,8 @@ import { of } from 'rxjs';
 describe('respond()', () => {
   it('should respond using given function.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(respond(() => 'Hellow!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -29,15 +27,13 @@ describe('respond()', () => {
 
   it('should only respond if there is no response already.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/:name').pipe(
           tap(({req, res}) => {
             if (req.params.name === 'a') res.send('AAA');
           }),
           respond(() => 'BBB')
         ).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         Promise.all([req.get('/a'), req.get('/b')])
@@ -53,10 +49,8 @@ describe('respond()', () => {
 
   it('should work with async functions.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(respond(() => new Promise(resolve => resolve('Hellow!')))).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -70,10 +64,8 @@ describe('respond()', () => {
 
   it('should work with obsevables.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(respond(() => of('Hellow!').pipe(delay(10)))).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -87,13 +79,11 @@ describe('respond()', () => {
 
   it('should catch errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(respond(({res}) => {
           res.sendStatus(500);
           throw Error();
         })).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());
@@ -103,13 +93,11 @@ describe('respond()', () => {
 
   it('should catch async errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(respond(({res}) => new Promise((_, reject) => {
           res.sendStatus(500);
           reject(Error());
         }))).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());
@@ -119,13 +107,11 @@ describe('respond()', () => {
 
   it('should catch observable errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(respond(({res}) => of(true).pipe(
           tap(() => res.sendStatus(500)),
           mergeMap(() => throwError(Error()))
         ))).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());
@@ -135,8 +121,7 @@ describe('respond()', () => {
 
   it('should pass down errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           use((_, res) => {
             res.sendStatus(500);
@@ -144,7 +129,6 @@ describe('respond()', () => {
           }),
           respond(() => '')
         ).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());
@@ -164,10 +148,8 @@ describe('respond()', () => {
 describe('json()', () => {
   it('should respond using given function.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(json(() => ({ msg: 'Hellow!' }))).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -181,15 +163,13 @@ describe('json()', () => {
 
   it('should only respond if there is no response already.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/:name').pipe(
           tap(({req, res}) => {
             if (req.params.name === 'a') res.json({msg: 'AAA'});
           }),
           json(() => ({msg: 'BBB'}))
         ).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         Promise.all([req.get('/a'), req.get('/b')])
@@ -205,10 +185,8 @@ describe('json()', () => {
 
   it('should work with async functions.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(json(() => new Promise(resolve => resolve({msg: 'Hellow!'})))).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -222,10 +200,8 @@ describe('json()', () => {
 
   it('should work with observables.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(json(() => of({ msg: 'Hellow!' }).pipe(delay(10)))).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -239,13 +215,11 @@ describe('json()', () => {
 
   it('should catch errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(json(({res}) => {
           res.sendStatus(500);
           throw Error();
         })).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());
@@ -255,13 +229,11 @@ describe('json()', () => {
 
   it('should catch async errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(json(({res}) => new Promise((_, reject) => {
           res.sendStatus(500);
           reject(Error());
         }))).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());
@@ -271,13 +243,11 @@ describe('json()', () => {
 
   it('should catch observable errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(json(({res}) => of(true).pipe(
           tap(() => res.sendStatus(500)),
           mergeMap(() => throwError(Error()))
         ))).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());
@@ -287,8 +257,7 @@ describe('json()', () => {
 
   it('should pass down errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           use((_, res) => {
             res.sendStatus(500);
@@ -296,7 +265,6 @@ describe('json()', () => {
           }),
           json(() => '')
         ).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());

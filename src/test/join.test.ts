@@ -1,4 +1,4 @@
-import { test } from './util';
+import { testWithRouter as test } from './util';
 
 import { timer, of } from 'rxjs';
 import { tap, delayWhen } from 'rxjs/operators';
@@ -12,8 +12,7 @@ import { json } from '../respond';
 describe('join()', () => {
   it('should merge incoming requests properly.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/:name').pipe(
           endpoint => join(
             endpoint.pipe(
@@ -25,7 +24,6 @@ describe('join()', () => {
           json(({req}) => req._)
         )
         .subscribe();
-        app.use(router.core);
       },
       async (req, cleanup) => {
         const res: any[] = [];
@@ -44,8 +42,7 @@ describe('join()', () => {
 
   it('should ignore requests that are responded to.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           endpoint => join()(
             endpoint.pipe(use((_, res, next) => { 
@@ -56,8 +53,6 @@ describe('join()', () => {
           )
         )
         .subscribe(() => done());
-
-        app.use(router.core);
       },
       async (req, cleanup) => {
         await req.get('/');
@@ -69,8 +64,7 @@ describe('join()', () => {
 
   it('should throw out requests that are respondend to.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           endpoint => join()(
             endpoint.pipe(use((_, res, next) => { 
@@ -83,8 +77,6 @@ describe('join()', () => {
           )
         )
         .subscribe(() => done());
-
-        app.use(router.core);
       },
       async (req, cleanup) => {
         await req.get('/');
@@ -96,8 +88,7 @@ describe('join()', () => {
 
   it('should pass along requests that are responded to when safe mode is turned off.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           endpoint => join({safe: false})(
             endpoint.pipe(use((_, res, next) => { 
@@ -108,8 +99,6 @@ describe('join()', () => {
           )
         )
         .subscribe(() => done());
-
-        app.use(router.core);
       },
       async (req, cleanup) => {
         await req.get('/');
@@ -120,8 +109,7 @@ describe('join()', () => {
 
   it('should keep requests that are responded to when safe mode is turned off.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           endpoint => join({safe: false})(
             endpoint.pipe(use((_, res, next) => {
@@ -134,8 +122,6 @@ describe('join()', () => {
           )
         )
         .subscribe(() => done());
-
-        app.use(router.core);
       },
       async (req, cleanup) => {
         await req.get('/');

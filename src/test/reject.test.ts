@@ -1,4 +1,4 @@
-import { test } from './util';
+import { testWithRouter as test } from './util';
 
 import { tap } from 'rxjs/operators';
 
@@ -10,10 +10,8 @@ import { reject, badrequest, unauthorized, forbidden, notfound } from '../reject
 describe('reject()', () => {
   it('should respond with given error status and message.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(reject(500, 'Mate!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -28,10 +26,8 @@ describe('reject()', () => {
 
   it('should default to empty message if no message specified.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(reject(418)).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -46,15 +42,13 @@ describe('reject()', () => {
 
   it('should only respond if the request is not responded to yet.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/:name').pipe(
           tap(({req, res}) => {
             if (req.params.name === 'a') res.sendStatus(418);
           }),
           reject(400),
         ).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         Promise.all([req.get('/a'), req.get('/b')])
@@ -70,8 +64,7 @@ describe('reject()', () => {
 
   it('should pass down errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           use((_, res) => {
             res.sendStatus(500);
@@ -79,7 +72,6 @@ describe('reject()', () => {
           }),
           reject(418)
         ).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(() => cleanup());
@@ -99,10 +91,8 @@ describe('reject()', () => {
 describe('badrequest()', () => {
   it('should be like `reject()` with 400 status.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(badrequest()).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -117,10 +107,8 @@ describe('badrequest()', () => {
 
   it('should be possible to use a custom message.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(badrequest('I hate you!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -138,10 +126,8 @@ describe('badrequest()', () => {
 describe('unauthorized()', () => {
   it('should be like `reject()` with 401 status.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(unauthorized()).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -156,10 +142,8 @@ describe('unauthorized()', () => {
 
   it('should be possible to use a custom message.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(unauthorized('I hate you!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -177,10 +161,8 @@ describe('unauthorized()', () => {
 describe('forbidden()', () => {
   it('should be like `reject()` with 403 status.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(forbidden()).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -195,10 +177,8 @@ describe('forbidden()', () => {
 
   it('should be possible to use a custom message.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(forbidden('I hate you!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -216,10 +196,8 @@ describe('forbidden()', () => {
 describe('notfound()', () => {
   it('should be like `reject()` with 404 status.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(notfound()).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {
@@ -234,10 +212,8 @@ describe('notfound()', () => {
 
   it('should be possible to use a custom message.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(notfound('I hate you!')).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').then(res => {

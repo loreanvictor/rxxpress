@@ -1,4 +1,4 @@
-import { test } from './util';
+import { testWithApp as test } from './util';
 
 import { Method } from '../types';
 import { Router } from '../router';

@@ -1,4 +1,4 @@
-import { test } from './util';
+import { testWithRouter as test } from './util';
 
 import { Router as R } from 'express';
 import { tap } from 'rxjs/operators';
@@ -11,11 +11,10 @@ import { Router } from '../router';
 describe('use()', () => {
   it('should allow piping an express router to a router.', done => {
     test(
-      app => {
+      router => {
         const _R = R();
         _R.get('/world', (req, res) => res.send(`${(req as Req)._.msg} World!`));
 
-        const router = new Router();
         router.use('/hello').pipe(
           tap(({req}) => req._.msg = 'Hello'),
           use(_R),
@@ -26,8 +25,6 @@ describe('use()', () => {
           tap(({req}) => req._.msg = 'Good Bye'),
           use(_R)
         ).subscribe();
-
-        app.use(router.core);
       },
       (req, cleanup) => {
         Promise.all([req.get('/hello/world'), req.get('/goodbye/world'), req.get('/hello/jack')])
@@ -44,8 +41,7 @@ describe('use()', () => {
 
   it('should allow using middleware functions with routers.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/:place').pipe(
           use((req, res, next) => {
             if (req.params.place === 'machine') next();
@@ -53,7 +49,6 @@ describe('use()', () => {
           }),
           tap(({res}) => res.send('Welcome to the machine'))
         ).subscribe();
-        app.use(router.core);
       },
       (req, cleanup) => {
         Promise.all([req.get('/machine'), req.get('/school')])
@@ -69,17 +64,14 @@ describe('use()', () => {
 
   it('should allow combining routers with each other.', done => {
     test(
-      app => {
+      router => {
         const sub = new Router();
         sub.get('/world').subscribe(({res}) => res.send('Hello World'));
 
-        const router = new Router();
         router.use('/hello').pipe(
           use(sub),
           tap(({res}) => res.send('I do not know you.'))
         ).subscribe();
-
-        app.use(router.core);
       },
       (req, cleanup) => {
         Promise.all([req.get('/hello/world'), req.get('/hello/john')])
@@ -95,12 +87,10 @@ describe('use()', () => {
 
   it('should catch errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           use((_, res) => { res.sendStatus(500); throw Error() })
         ).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').end(() => {
@@ -112,12 +102,10 @@ describe('use()', () => {
 
   it('should error out if error is provided to `next()`.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           use((_, res, next) => { res.sendStatus(500); next(Error()) })
         ).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').end(() => {
@@ -129,13 +117,11 @@ describe('use()', () => {
 
   it('should pass down errors.', done => {
     test(
-      app => {
-        const router = new Router();
+      router => {
         router.get('/').pipe(
           use((_, res) => { res.sendStatus(500); throw Error() }),
           use(() => {}),
         ).subscribe(() => {}, () => done());
-        app.use(router.core);
       },
       (req, cleanup) => {
         req.get('/').end(() => {
