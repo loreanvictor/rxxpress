@@ -8,4 +8,5 @@ describe('rxxpress', () => {
   require('./noop.test');
   require('./next.test');
   require('./join.test');
+  require('./wait.test');
 });
