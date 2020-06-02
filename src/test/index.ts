@@ -7,4 +7,5 @@ describe('rxxpress', () => {
   require('./timeout.test');
   require('./noop.test');
   require('./next.test');
+  require('./join.test');
 });
