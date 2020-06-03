@@ -7,7 +7,7 @@ import { Packet, Status } from './types';
 /**
  *
  * Represents a check function, which checks something for each incoming
- * package. Should return a `boolean`, a promise of a `boolean` or an observable
+ * packet. Should return a `boolean`, a promise of a `boolean` or an observable
  * of a `boolean`.
  *
  */

@@ -104,9 +104,21 @@ The first value emitted by return observable will be used.
 
 ---
 
+## Safety
+
+`check()` operator will not conduct checks on incoming requests
+if they are already responded to. Also if the request is responded to while
+the check is being conducted, it will ignore the result of the check
+and ignore the packet as a whole.
+
+---
+
 ## Packet Flow
 
 If the check fails, the packet won't be passed down the observable sequence. Otherwise,
 it will be passed down.
+
+Additionally, if a request is already responded to or if it is responded to while
+the check is being conducted, the packet will not be passed down.
 
 > :ToCPrevNext

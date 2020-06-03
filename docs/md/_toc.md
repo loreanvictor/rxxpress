@@ -6,6 +6,8 @@
 > [`use()`](/operators/use)
 > [`respond()`](/operators/respond)
 > [`check()`](/operators/check)
+> [`wait()`](/operators/wait)
+> [`join()`](/operators/join)
 > [`reject()`](/operators/reject)
 > [`next()`](/operators/next)
 > [`timeout()`](/operators/timeout)

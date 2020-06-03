@@ -22,7 +22,7 @@ router.post('/')
 
 ---
 
-## Safe Mode
+## Safety
 
 By default, `next()` operates in _safe mode_, which means it only passes
 the request to next handler IF the request is not responded to:

@@ -6,6 +6,6 @@ export { next } from './next';
 export { respond, json, RepsonseFunc } from './respond';
 export { check, validate, authorize, allow, find, Check, CheckOptions } from './check';
 export { reject, badrequest, unauthorized, forbidden, notfound } from './reject';
-export { join } from './join';
-export { wait } from './wait';
+export { join, JoinOptions } from './join';
+export { wait, Wait } from './wait';
 export { Packet, Method, Req } from './types';

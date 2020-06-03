@@ -3,7 +3,22 @@ import { map, tap, share, filter } from 'rxjs/operators';
 import { Packet } from './types';
 
 
+/**
+ *
+ * Valid options for [`join()`](https://loreanvictor.github.io/rxxpress/operators/join)
+ * operator
+ *
+ */
 export interface JoinOptions {
+  /**
+   *
+   * Denotes whether `join()` should run in safe mode or not. In safe mode,
+   * requests that are responded to are ignored. While turned off, those requests
+   * will also be passed down the observable sequence.
+   *
+   * @see [the official docs](https://loreanvictor.github.io/rxxpress/operators/join#safety) for more information.
+   *
+   */
   safe?: boolean;
 }
 
@@ -12,6 +27,14 @@ type StackEntry = { flag: boolean[] };
 type StackType = {[id: string]: StackEntry };
 
 
+/**
+ *
+ * When all given observables emit the same packet, will emit that packet.
+ * Can be used to conduct simultaenous checks / actions on incoming packets.
+ *
+ * @see [the official docs](https://loreanvictor.github.io/rxxpress/operators/join) for more information.
+ *
+ */
 export function join(): (...obs: Observable<Packet>[]) => Observable<Packet>;
 export function join(...obs: Observable<Packet>[]): Observable<Packet>;
 export function join(options?: JoinOptions): (...obs: Observable<Packet>[]) => Observable<Packet>;
