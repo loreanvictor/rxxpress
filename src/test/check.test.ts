@@ -85,6 +85,57 @@ describe('check()', () => {
     )
   });
 
+  it('should not check requests that are responded to.', done => {
+    test(
+      router => {
+        router.get('/').pipe(
+          tap(({res}) => res.send()),
+          check(() => { done(); return false; })
+        )
+        .subscribe(() => done());
+      },
+      async (req, cleanup) => {
+        await req.get('/');
+        cleanup();
+        done();
+      }
+    )
+  });
+
+  it('should not respond to requests that are responded to while checking.', done => {
+    test(
+      router => {
+        router.get('/').pipe(
+          tap(({res}) => setTimeout(() => res.send(), 5)),
+          check(() => new Promise(resolve => setTimeout(() => resolve(true), 10)))
+        )
+        .subscribe(() => done());
+      },
+      async (req, cleanup) => {
+        await req.get('/');
+        cleanup();
+        done();
+      }
+    )
+  });
+
+  it('should not respond to requests that are responded to while checking via observables.', done => {
+    test(
+      router => {
+        router.get('/').pipe(
+          tap(({res}) => setTimeout(() => res.send(), 5)),
+          check(() => of(true).pipe(delay(10))),
+        )
+        .subscribe(() => done());
+      },
+      async (req, cleanup) => {
+        await req.get('/');
+        cleanup();
+        done();
+      }
+    )
+  });
+
   it('should catch errors.', done => {
     test(
       router => {

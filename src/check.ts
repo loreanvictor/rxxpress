@@ -58,8 +58,13 @@ export function check(_check: Check, options: Partial<CheckOptions> = {}): Opera
     return new Observable<Packet>(observer => {
       return source.subscribe(
         async packet => {
+          if (packet.res.headersSent) return;
+
           try {
             const _res = await _check(packet);
+
+            if (packet.res.headersSent) return;
+
             if (typeof _res === 'boolean') {
               if (_res) observer.next(packet);
               else packet.res.status(opts.status).send(opts.message);
@@ -67,6 +72,7 @@ export function check(_check: Check, options: Partial<CheckOptions> = {}): Opera
             else {
               _res.pipe(first()).subscribe(
                 pass => {
+                  if (packet.res.headersSent) return;
                   if (pass) observer.next(packet);
                   else packet.res.status(opts.status).send(opts.message);
                 },
